@@ -7,7 +7,7 @@ from models import resnet
 
 def psnr(target, ref):
     rmse = tf.sqrt(tf.reduce_mean(tf.squared_difference(target, ref)))
-    result = 20*tf.log(256*256*3/rmse)/tf.log(tf.constant(10.))
+    result = 20*tf.log(255*255/rmse)/tf.log(tf.constant(10.))
     return result
 
 batch_size = 32
@@ -18,14 +18,9 @@ learning_rate = 0.001
 width = 50
 height = 50
 
-"""
-flags = tf.app.flags
-FLAGS = flags.FLAGS
-flags.DEFINE_float('learning_rate', learning_rate, 'Learning rate')
-flags.DEFINE_integer('batch_size', batch_size, 'Batch size')
-"""
 
 (X_train, Y_train), (X_test, Y_test), (X_val, Y_val) = load_data()
+
 """
 X_train = X_train.reshape([-1, width, height, 3])
 Y_train = Y_train.reshape([-1, width, height, 3])
@@ -35,8 +30,8 @@ X_val = X_val.reshape([-1, width, height, 3])
 Y_val = Y_val.reshape([-1, width, height, 3])
 """
 
-X = tf.placeholder("float", [None, 50, 50, 3])
-Y = tf.placeholder("float", [None, 50, 50, 3])
+X = tf.placeholder("float", [None, None, None, 3])
+Y = tf.placeholder("float", [None, None, None, 3])
 
 # ResNet Models
 net = resnet(X, 20)

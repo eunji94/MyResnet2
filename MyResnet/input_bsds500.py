@@ -12,10 +12,10 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
-width = 100
-height = 100
+width = 200
+height = 200
 
-def load_data(dirname="BSR/BSDS500/data/images"):
+def load_data(dirname="BSDS500_PNG"):
 
     print("Start Data Loading")
     fpath = os.path.join(dirname, 'train')
@@ -37,13 +37,13 @@ def load_data(dirname="BSR/BSDS500/data/images"):
     
 
 def jpg_to_tensor(dirname):
-    fpath = os.path.join(dirname,'*.jpg')
+    fpath = os.path.join(dirname,'*.png')
     file_list = glob.glob(fpath)
     X = []
     Y = []
     for i in range(len(file_list)):
-        jpeg_r = tf.read_file(file_list[i])
-        image = tf.image.decode_jpeg(jpeg_r, channels=3)
+        png_r = tf.read_file(file_list[i])
+        image = tf.image.decode_png(png_r, channels=3)
         resized_image = tf.image.resize_image_with_crop_or_pad(image, width, height)
         gaussian_image = Gaussian_noise_layer(resized_image, 10)
         gaussian_image = tf.cast(gaussian_image, tf.float16)
